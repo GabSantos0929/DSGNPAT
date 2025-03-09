@@ -148,7 +148,6 @@ public class MediaPlayer {
     // ===============================
     // HELPER METHODS
     // ===============================
-    // Detects file format based on the file extension
     private String detectFormat(File file) {
         String fileName = file.getName().toLowerCase();
         for (String format : factoryMap.keySet()) {
@@ -159,17 +158,14 @@ public class MediaPlayer {
         return null;
     }
 
-    // Checks if the file format is supported
     public boolean isSupported(File file) {
         return detectFormat(file) != null;
     }
 
-    // Displays all supported formats
     public void displaySupportedFormats() {
         System.out.println("Supported formats: " + String.join(", ", factoryMap.keySet()));
     }
 
-    // Returns all supported formats as a string
     public String getSupportedFormats() {
         return String.join(", ", factoryMap.keySet());
     }
