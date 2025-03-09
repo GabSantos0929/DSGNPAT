@@ -1,3 +1,5 @@
+package adapters;
+import players.AudioPlayer;
 import players.FLACPlayer;
 
 public class FLACPlayerAdapter implements AudioPlayer {

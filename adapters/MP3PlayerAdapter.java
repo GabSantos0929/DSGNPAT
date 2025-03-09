@@ -1,3 +1,5 @@
+package adapters;
+import players.AudioPlayer;
 import players.MP3Player;
 
 public class MP3PlayerAdapter implements AudioPlayer {

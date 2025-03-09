@@ -1,3 +1,5 @@
+package adapters;
+import players.AudioPlayer;
 import players.AACPlayer;
 
 public class AACPlayerAdapter implements AudioPlayer {

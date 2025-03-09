@@ -1,3 +1,5 @@
+package adapters;
+import players.AudioPlayer;
 import players.OGGPlayer;
 
 public class OGGPlayerAdapter implements AudioPlayer {
