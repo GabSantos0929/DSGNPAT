@@ -2,12 +2,17 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-// Product Interface
+// ===============================
+// PRODUCT INTERFACE
+// ===============================
 interface Player {
     void play(String fileName);
 }
 
-// Concrete Products
+// ===============================
+// CONCRETE PRODUCTS
+// ===============================
+
 class MP3Player implements Player {
     @Override
     public void play(String fileName) {
@@ -43,50 +48,67 @@ class OGGPlayer implements Player {
     }
 }
 
+// ===============================
+// CREATOR (ABSTRACT FACTORY)
+// ===============================
+
 abstract class PlayerFactory {
-    abstract Player createPlayer();
+    abstract Player createPlayer(); // Factory Method
 }
+
+// ===============================
+// CONCRETE FACTORIES
+// ===============================
 
 class MP3PlayerFactory extends PlayerFactory {
     @Override
     Player createPlayer() {
-        return new MP3Player();
+        return new MP3Player(); // Returns an MP3Player instance
     }
 }
 
 class WAVPlayerFactory extends PlayerFactory {
     @Override
     Player createPlayer() {
-        return new WAVPlayer();
+        return new WAVPlayer(); // Returns a WAVPlayer instance
     }
 }
 
 class FLACPlayerFactory extends PlayerFactory {
     @Override
     Player createPlayer() {
-        return new FLACPlayer();
+        return new FLACPlayer(); // Returns a FLACPlayer instance
     }
 }
 
 class AACPlayerFactory extends PlayerFactory {
     @Override
     Player createPlayer() {
-        return new AACPlayer();
+        return new AACPlayer(); // Returns an AACPlayer instance
     }
 }
 
 class OGGPlayerFactory extends PlayerFactory {
     @Override
     Player createPlayer() {
-        return new OGGPlayer();
+        return new OGGPlayer(); // Returns an OGGPlayer instance
     }
 }
 
+// ===============================
+// CLIENT CLASS
+// ===============================
+
 public class MediaPlayer {
+    // Map to store file format and corresponding factory
     private Map<String, PlayerFactory> factoryMap = new HashMap<>();
     private Player currentPlayer;
 
+    // ===============================
+    // CONSTRUCTOR
+    // ===============================
     public MediaPlayer() {
+        // Register concrete factories in the map (Dependency Injection)
         factoryMap.put("mp3", new MP3PlayerFactory());
         factoryMap.put("wav", new WAVPlayerFactory());
         factoryMap.put("flac", new FLACPlayerFactory());
@@ -94,20 +116,27 @@ public class MediaPlayer {
         factoryMap.put("ogg", new OGGPlayerFactory());
     }
 
+    // ===============================
+    // PLAY METHOD
+    // ===============================
     public void play(File file) {
-        String format = detectFormat(file);
+        String format = detectFormat(file); // Detect file format
         if (format == null) {
             System.out.println("Unsupported file format: " + file.getName());
             return;
         }
 
+        // Use the corresponding factory to create a player
         PlayerFactory factory = factoryMap.get(format);
         if (factory != null) {
-            currentPlayer = factory.createPlayer();
-            currentPlayer.play(file.getName());
+            currentPlayer = factory.createPlayer(); // Factory method call
+            currentPlayer.play(file.getName()); // Polymorphic call to the play() method
         }
     }
 
+    // ===============================
+    // PAUSE AND STOP METHODS
+    // ===============================
     public void pause() {
         System.out.println("Paused");
     }
@@ -116,6 +145,10 @@ public class MediaPlayer {
         System.out.println("Stopped");
     }
 
+    // ===============================
+    // HELPER METHODS
+    // ===============================
+    // Detects file format based on the file extension
     private String detectFormat(File file) {
         String fileName = file.getName().toLowerCase();
         for (String format : factoryMap.keySet()) {
@@ -125,12 +158,18 @@ public class MediaPlayer {
         }
         return null;
     }
+
+    // Checks if the file format is supported
     public boolean isSupported(File file) {
         return detectFormat(file) != null;
     }
+
+    // Displays all supported formats
     public void displaySupportedFormats() {
         System.out.println("Supported formats: " + String.join(", ", factoryMap.keySet()));
     }
+
+    // Returns all supported formats as a string
     public String getSupportedFormats() {
         return String.join(", ", factoryMap.keySet());
     }
